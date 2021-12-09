@@ -7,8 +7,10 @@ import ShareScreen from './screens/ShareScreen';
 import ConnectScreen from './screens/ConnectScreen';
 import QuizScreen from './screens/QuizScreen';
 import WaitingScreen from './screens/WaitingScreen';
+import LoginScreen from './screens/LoginScreen';
 
 export type StackProps = {
+  LoginScreen: undefined;
   StartScreen: undefined;
   SelectQuizScreen: undefined;
   ShareScreen: undefined;
@@ -19,15 +21,29 @@ export type StackProps = {
 const Stack = createNativeStackNavigator<StackProps>();
 
 const Navigation = () => {
+  // TODO если есть юзер, то StartScreen, иначе LoginScreen
+  // const initialRoute = 'StartScreen';
+  const initialRoute = 'LoginScreen';
+
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="StartScreen">
+      <Stack.Navigator initialRouteName={initialRoute}>
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+            title: 'Вход в приложение',
+            gestureEnabled: false,
+          }}
+        />
         <Stack.Screen
           name="StartScreen"
           component={StartScreen}
           options={{
             headerShown: false,
             title: 'Главная страница',
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen
@@ -68,6 +84,7 @@ const Navigation = () => {
           options={{
             headerShown: false,
             title: 'Опрос',
+            gestureEnabled: false,
           }}
         />
       </Stack.Navigator>

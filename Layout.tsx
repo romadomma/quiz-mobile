@@ -23,6 +23,7 @@ type LayoutProps = {
     | 'QuizScreen'
     | 'ShareScreen'
     | 'ConnectScreen'
+    | 'LoginScreen'
   >;
 };
 
@@ -33,7 +34,6 @@ const Layout = ({
   showBackButton = false,
   title,
 }: LayoutProps) => {
-  // title = navigation.getState().index;
   const contentView = isScrollable ? (
     <ScrollView
       style={styles.scrollContainer}
