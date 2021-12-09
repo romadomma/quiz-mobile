@@ -1,20 +1,26 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, View, Text} from 'react-native';
+import {View, Text} from 'react-native';
 import Button from '../components/Button';
 import Clipboard from '@react-native-clipboard/clipboard';
+import Layout from '../Layout';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {StackProps} from '../App';
 
-const ShareScreen = () => {
+type ShareScreenProps = NativeStackScreenProps<StackProps, 'ShareScreen'>;
+
+const ShareScreen = ({navigation}: ShareScreenProps) => {
   const connectCode = 'FJDCE2';
 
   return (
-    <SafeAreaView>
-      <StatusBar />
+    // Прокинуть в параметры объект опроса и брать title из него
+    <Layout navigation={navigation} showBackButton title={'Опрос 1'}>
       <View>
-        <Text>Подключение к опросу</Text>
+        <Text>Код для подключения к опросу</Text>
       </View>
       <View>
         <Button
           title={connectCode}
+          icon="copy1"
           onPress={() => Clipboard.setString(connectCode)}
         />
       </View>
@@ -22,7 +28,7 @@ const ShareScreen = () => {
         <Text>Подключено N человек</Text>
       </View>
       <Button title={'Начать опрос'} />
-    </SafeAreaView>
+    </Layout>
   );
 };
 

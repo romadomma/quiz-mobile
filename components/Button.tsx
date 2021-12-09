@@ -7,14 +7,16 @@ import {
   TextStyle,
   ViewStyle,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 export type ButtonProps = {
   title: string;
   textStyle?: TextStyle;
   pressableStyle?: ViewStyle;
+  icon?: string;
 } & PressableProps;
 
-const Button = ({title, ...args}: ButtonProps) => (
+const Button = ({title, icon, ...args}: ButtonProps) => (
   <Pressable
     style={({pressed}) => {
       return {
@@ -31,18 +33,13 @@ const Button = ({title, ...args}: ButtonProps) => (
         ...styles.buttonText,
         ...args.textStyle,
       }}>
+      {icon && <Icon name={icon} size={16} />}
       {title}
     </Text>
   </Pressable>
 );
 
 const styles = StyleSheet.create({
-  mainContent: {
-    display: 'flex',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   button: {
     alignItems: 'center',
     justifyContent: 'center',

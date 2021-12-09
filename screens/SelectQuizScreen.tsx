@@ -1,8 +1,9 @@
 import React from 'react';
-import {SafeAreaView, StatusBar, View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import Button from '../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackProps} from '../App';
+import Layout from '../Layout';
 
 type SelectQuizScreenProps = NativeStackScreenProps<
   StackProps,
@@ -17,11 +18,11 @@ const goToShareScreen =
 
 const SelectQuizScreen = ({navigation}: SelectQuizScreenProps) => {
   return (
-    <SafeAreaView>
-      <StatusBar />
-      <View style={styles.title}>
-        <Text style={styles.titleText}>Выберите опрос</Text>
-      </View>
+    <Layout
+      navigation={navigation}
+      showBackButton
+      isScrollable
+      title={'Выберите опрос'}>
       <View style={styles.mainContent}>
         <Button
           title={'Опрос 1'}
@@ -38,27 +39,54 @@ const SelectQuizScreen = ({navigation}: SelectQuizScreenProps) => {
           pressableStyle={styles.buttonStyle}
           onPress={goToShareScreen(navigation)}
         />
+        <Button
+          title={'Опрос 3'}
+          pressableStyle={styles.buttonStyle}
+          onPress={goToShareScreen(navigation)}
+        />
+        <Button
+          title={'Опрос 3'}
+          pressableStyle={styles.buttonStyle}
+          onPress={goToShareScreen(navigation)}
+        />
+        <Button
+          title={'Опрос 3'}
+          pressableStyle={styles.buttonStyle}
+          onPress={goToShareScreen(navigation)}
+        />
+        <Button
+          title={'Опрос 3'}
+          pressableStyle={styles.buttonStyle}
+          onPress={goToShareScreen(navigation)}
+        />
+        <Button
+          title={'Опрос 3'}
+          pressableStyle={styles.buttonStyle}
+          onPress={goToShareScreen(navigation)}
+        />
+        <Button
+          title={'Опрос 3'}
+          pressableStyle={styles.buttonStyle}
+          onPress={goToShareScreen(navigation)}
+        />
+        <Button
+          title={'Опрос 3'}
+          pressableStyle={styles.buttonStyle}
+          onPress={goToShareScreen(navigation)}
+        />
+        <Button
+          title={'Опрос 5'}
+          pressableStyle={styles.buttonStyle}
+          onPress={goToShareScreen(navigation)}
+        />
       </View>
-    </SafeAreaView>
+    </Layout>
   );
 };
 
 const styles = StyleSheet.create({
   buttonStyle: {
     width: '60%',
-  },
-  titleText: {
-    fontSize: 20,
-    lineHeight: 21,
-    fontWeight: 'bold',
-    letterSpacing: 0.25,
-    color: 'black',
-  },
-  title: {
-    width: '100%',
-    paddingVertical: 15,
-    display: 'flex',
-    alignItems: 'center',
   },
   mainContent: {
     height: '100%',
