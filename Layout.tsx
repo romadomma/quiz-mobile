@@ -1,5 +1,7 @@
 import React, {ReactNode} from 'react';
 import {
+  Alert,
+  Pressable,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -9,13 +11,17 @@ import {
 } from 'react-native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {StackProps} from './App';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import {User} from './types';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type LayoutProps = {
   children: ReactNode;
   isScrollable?: boolean;
   showBackButton?: boolean;
   title?: string;
+  user?: User;
+  setUser: (user?: User) => Promise<void> | void;
   navigation: NativeStackNavigationProp<
     StackProps,
     | 'SelectQuizScreen'
@@ -24,6 +30,7 @@ type LayoutProps = {
     | 'ShareScreen'
     | 'ConnectScreen'
     | 'LoginScreen'
+    | 'WaitingScreen'
   >;
 };
 
@@ -33,6 +40,8 @@ const Layout = ({
   isScrollable = false,
   showBackButton = false,
   title,
+  user,
+  setUser,
 }: LayoutProps) => {
   const contentView = isScrollable ? (
     <ScrollView
@@ -50,9 +59,39 @@ const Layout = ({
     <SafeAreaView style={styles.root}>
       <StatusBar barStyle={'dark-content'} />
       <View style={styles.header}>
-        <Text>{'Nickname'}</Text>
+        {user && (
+          <Pressable
+            style={styles.userContent}
+            onPress={() =>
+              Alert.alert(
+                'Выход',
+                'Вы уверены что хотите выйти из учетной записи?',
+                [
+                  {
+                    text: 'Отмена',
+                    style: 'cancel',
+                  },
+                  {
+                    text: 'Ок',
+                    onPress: () => {
+                      AsyncStorage.clear();
+                      setUser(undefined);
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: 'LoginScreen', params: {setUser}}],
+                      });
+                      // navigation.navigate('LoginScreen', {setUser});
+                    },
+                  },
+                ],
+              )
+            }>
+            <Icon name="user" size={32} />
+            <Text style={styles.userNickname}>{user.nickname}</Text>
+          </Pressable>
+        )}
         {showBackButton && (
-          <Icon name="leftcircleo" size={32} onPress={navigation.goBack} />
+          <Icon name="arrow-left" size={32} onPress={navigation.goBack} />
         )}
         {title && <Text style={styles.titleText}>{title}</Text>}
       </View>
@@ -75,6 +114,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row-reverse',
     flexWrap: 'wrap',
+    height: 48,
+  },
+  userContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexWrap: 'nowrap',
+  },
+  userNickname: {
+    fontSize: 20,
   },
   titleText: {
     width: '100%',

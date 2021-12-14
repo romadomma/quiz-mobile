@@ -8,12 +8,17 @@ import {StackProps} from '../App';
 
 type ShareScreenProps = NativeStackScreenProps<StackProps, 'ShareScreen'>;
 
-const ShareScreen = ({navigation}: ShareScreenProps) => {
+const ShareScreen = ({navigation, route}: ShareScreenProps) => {
   const connectCode = 'FJDCE2';
-
+  const {user, setUser} = route.params;
   return (
     // Прокинуть в параметры объект опроса и брать title из него
-    <Layout navigation={navigation} showBackButton title={'Опрос 1'}>
+    <Layout
+      navigation={navigation}
+      user={user}
+      setUser={setUser}
+      showBackButton
+      title={'Опрос 1'}>
       <View>
         <Text>Код для подключения к опросу</Text>
       </View>

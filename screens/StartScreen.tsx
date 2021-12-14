@@ -7,18 +7,25 @@ import {StyleSheet, View} from 'react-native';
 
 type StartScreenProps = NativeStackScreenProps<StackProps, 'StartScreen'>;
 
-const StartScreen = ({navigation}: StartScreenProps) => {
+const StartScreen = ({navigation, route}: StartScreenProps) => {
+  const {user, setUser} = route.params;
   return (
-    <Layout navigation={navigation} title={'Добро пожаловать!'}>
+    <Layout
+      navigation={navigation}
+      user={user}
+      setUser={setUser}
+      title={'Добро пожаловать!'}>
       <View style={styles.root}>
         <Button
           title={'Создать'}
-          onPress={() => navigation.navigate('SelectQuizScreen')}
+          onPress={() =>
+            navigation.navigate('SelectQuizScreen', {user, setUser})
+          }
           pressableStyle={styles.button}
         />
         <Button
           title={'Подключиться к опросу'}
-          onPress={() => navigation.navigate('ConnectScreen')}
+          onPress={() => navigation.navigate('ConnectScreen', {user, setUser})}
           pressableStyle={styles.button}
         />
       </View>

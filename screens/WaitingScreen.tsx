@@ -1,51 +1,31 @@
 import React from 'react';
-import {
-  Alert,
-  DynamicColorIOS,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from 'react-native';
+import {Alert} from 'react-native';
 import Button from '../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackProps} from '../App';
+import Layout from '../Layout';
 
-type StartScreenProps = NativeStackScreenProps<StackProps, 'WaitingScreen'>;
+type WaitingScreenProps = NativeStackScreenProps<StackProps, 'WaitingScreen'>;
 
-const WaitingScreen = ({navigation}: StartScreenProps) => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const barStyle = DynamicColorIOS({
-    light: '#eeeeee',
-    dark: '#111111',
-  });
+const WaitingScreen = ({navigation, route}: WaitingScreenProps) => {
+  const {user, setUser} = route.params;
   return (
-    <SafeAreaView style={{backgroundColor: barStyle}}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.mainContent}>
-        <Button
-          title={'Создать'}
-          // @ts-ignore
-          onPress={() => navigation.navigate('SelectQuizScreen')}
-        />
-        <Button
-          title={'Подключиться к опросу'}
-          onPress={() => Alert.alert('Подключаемся к опросу')}
-        />
-      </View>
-    </SafeAreaView>
+    <Layout
+      navigation={navigation}
+      user={user}
+      setUser={setUser}
+      title={'Добро пожаловать!'}>
+      <Button
+        title={'Создать'}
+        // @ts-ignore
+        onPress={() => navigation.navigate('SelectQuizScreen')}
+      />
+      <Button
+        title={'Подключиться к опросу'}
+        onPress={() => Alert.alert('Подключаемся к опросу')}
+      />
+    </Layout>
   );
 };
-
-const styles = StyleSheet.create({
-  mainContent: {
-    display: 'flex',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default WaitingScreen;

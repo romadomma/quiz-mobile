@@ -7,9 +7,10 @@ import Button from '../components/Button';
 
 type StartScreenProps = NativeStackScreenProps<StackProps, 'QuizScreen'>;
 
-const QuizScreen = ({navigation}: StartScreenProps) => {
+const QuizScreen = ({navigation, route}: StartScreenProps) => {
+  const {user, setUser} = route.params;
   return (
-    <Layout navigation={navigation}>
+    <Layout navigation={navigation} user={user} setUser={setUser}>
       <View style={styles.root}>
         {/*вопрос*/}
         <View style={styles.question}>

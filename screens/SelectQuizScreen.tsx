@@ -4,6 +4,7 @@ import Button from '../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackProps} from '../App';
 import Layout from '../Layout';
+import {User} from '../types';
 
 type SelectQuizScreenProps = NativeStackScreenProps<
   StackProps,
@@ -11,15 +12,18 @@ type SelectQuizScreenProps = NativeStackScreenProps<
 >;
 
 const goToShareScreen =
-  ({navigate}: SelectQuizScreenProps['navigation']) =>
+  ({navigate}: SelectQuizScreenProps['navigation'], user: User) =>
   () =>
     // @ts-ignore
-    navigate('ShareScreen');
+    navigate('ShareScreen', user);
 
-const SelectQuizScreen = ({navigation}: SelectQuizScreenProps) => {
+const SelectQuizScreen = ({navigation, route}: SelectQuizScreenProps) => {
+  const {user, setUser} = route.params;
   return (
     <Layout
       navigation={navigation}
+      user={user}
+      setUser={setUser}
       showBackButton
       isScrollable
       title={'Выберите опрос'}>
@@ -27,57 +31,57 @@ const SelectQuizScreen = ({navigation}: SelectQuizScreenProps) => {
         <Button
           title={'Опрос 1'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 2'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 3'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 3'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 3'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 3'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 3'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 3'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 3'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 3'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
         <Button
           title={'Опрос 5'}
           pressableStyle={styles.buttonStyle}
-          onPress={goToShareScreen(navigation)}
+          onPress={goToShareScreen(navigation, user)}
         />
       </View>
     </Layout>

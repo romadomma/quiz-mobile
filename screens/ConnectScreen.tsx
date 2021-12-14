@@ -10,11 +10,14 @@ const CONNECTION_CODE_LENGTH = 6;
 
 type ConnectScreenProps = NativeStackScreenProps<StackProps, 'ConnectScreen'>;
 
-const ConnectScreen = ({navigation}: ConnectScreenProps) => {
+const ConnectScreen = ({navigation, route}: ConnectScreenProps) => {
+  const {user, setUser} = route.params;
   const [connectionCode, setConnectionCode] = useState('');
   return (
     <Layout
       navigation={navigation}
+      user={user}
+      setUser={setUser}
       showBackButton
       title={'Введите код подключения'}>
       <View style={styles.root}>
@@ -26,7 +29,7 @@ const ConnectScreen = ({navigation}: ConnectScreenProps) => {
         />
         <Button
           title={'Подключиться к опросу'}
-          onPress={() => navigation.navigate('QuizScreen')}
+          onPress={() => navigation.navigate('QuizScreen', {user, setUser})}
           pressableStyle={styles.connectButton}
         />
       </View>
