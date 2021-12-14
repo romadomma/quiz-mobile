@@ -10,6 +10,7 @@ import {useMutation} from 'react-query';
 import login, {LoginProps} from '../api/login';
 import {User} from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '../components/Loader';
 
 type LoginScreenProps = NativeStackScreenProps<StackProps, 'LoginScreen'>;
 
@@ -35,10 +36,7 @@ const LoginScreen = ({navigation, route}: LoginScreenProps) => {
   }, [user, appUser]);
 
   const content = isLoading ? (
-    <>
-      <ActivityIndicator size="large" />
-      <Text>Загрузка...</Text>
-    </>
+    <Loader />
   ) : (
     <View style={styles.root}>
       <FormInput

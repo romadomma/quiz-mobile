@@ -5,3 +5,11 @@ export type User = {
   createdAt: string;
   accessToken: string;
 };
+
+export type Quiz = {
+  id: number;
+  ownerId: number;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+};

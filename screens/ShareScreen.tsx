@@ -6,7 +6,10 @@ import Layout from '../Layout';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackProps} from '../App';
 
-type ShareScreenProps = NativeStackScreenProps<StackProps, 'ShareScreen'>;
+export type ShareScreenProps = NativeStackScreenProps<
+  StackProps,
+  'ShareScreen'
+>;
 
 const ShareScreen = ({navigation, route}: ShareScreenProps) => {
   const connectCode = 'FJDCE2';

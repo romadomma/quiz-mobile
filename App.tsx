@@ -8,10 +8,10 @@ import ConnectScreen from './screens/ConnectScreen';
 import QuizScreen from './screens/QuizScreen';
 import WaitingScreen from './screens/WaitingScreen';
 import LoginScreen from './screens/LoginScreen';
-import {User} from './types';
+import {Quiz, User} from './types';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {ActivityIndicator, Text} from 'react-native';
+import Loader from './components/Loader';
 
 export type StackProps = {
   LoginScreen: {
@@ -29,6 +29,7 @@ export type StackProps = {
   ShareScreen: {
     setUser: (user?: User) => Promise<void> | void;
     user: User;
+    quiz: Quiz;
   };
   ConnectScreen: {
     setUser: (user?: User) => Promise<void> | void;
@@ -63,12 +64,7 @@ const App = () => {
   }, [isReady]);
 
   if (!isReady) {
-    return (
-      <>
-        <ActivityIndicator size="large" />
-        <Text>Загрузка...</Text>
-      </>
-    );
+    return <Loader />;
   }
 
   return (
@@ -98,20 +94,12 @@ const App = () => {
               title: 'Главная страница',
               gestureEnabled: false,
             }}
-            initialParams={{
-              setUser,
-              user,
-            }}
           />
           <Stack.Screen
             name="SelectQuizScreen"
             component={SelectQuizScreen}
             options={{
               title: 'Выбор опроса',
-            }}
-            initialParams={{
-              setUser,
-              user,
             }}
           />
           <Stack.Screen
@@ -120,20 +108,12 @@ const App = () => {
             options={{
               title: 'Подключение участников',
             }}
-            initialParams={{
-              setUser,
-              user,
-            }}
           />
           <Stack.Screen
             name="ConnectScreen"
             component={ConnectScreen}
             options={{
               title: 'Подключение к опросу',
-            }}
-            initialParams={{
-              setUser,
-              user,
             }}
           />
           <Stack.Screen
@@ -142,10 +122,6 @@ const App = () => {
             options={{
               title: 'Ожидание других участников',
             }}
-            initialParams={{
-              setUser,
-              user,
-            }}
           />
           <Stack.Screen
             name="QuizScreen"
@@ -153,10 +129,6 @@ const App = () => {
             options={{
               title: 'Опрос',
               gestureEnabled: false,
-            }}
-            initialParams={{
-              setUser,
-              user,
             }}
           />
         </Stack.Navigator>
