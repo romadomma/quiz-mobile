@@ -12,6 +12,7 @@ import {Quiz, User} from './types';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from './components/Loader';
+import {Socket} from 'socket.io-client';
 
 export type StackProps = {
   LoginScreen: {
@@ -42,6 +43,7 @@ export type StackProps = {
   WaitingScreen: {
     setUser: (user?: User) => Promise<void> | void;
     user: User;
+    socket: Socket;
   };
 };
 const Stack = createNativeStackNavigator<StackProps>();

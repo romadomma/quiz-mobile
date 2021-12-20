@@ -8,6 +8,8 @@ import {useQuery} from 'react-query';
 import getQuizzes from '../api/getQuizzes';
 import Loader from '../components/Loader';
 import {ShareScreenProps} from './ShareScreen';
+import {AxiosError} from 'axios';
+import {Quiz} from '../types';
 
 type SelectQuizScreenProps = NativeStackScreenProps<
   StackProps,
@@ -25,9 +27,16 @@ const goToShareScreen =
 
 const SelectQuizScreen = ({navigation, route}: SelectQuizScreenProps) => {
   const {user, setUser} = route.params;
-  const {isLoading, data} = useQuery('/quiz', getQuizzes);
+  const {isLoading, data, error} = useQuery<Quiz[], AxiosError, Quiz[]>(
+    '/quiz',
+    getQuizzes,
+  );
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (error && error.code === '401') {
+    navigation.navigate('LoginScreen', {setUser});
   }
 
   if (data) {

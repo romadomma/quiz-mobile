@@ -1,6 +1,5 @@
-import React from 'react';
-import {Alert} from 'react-native';
-import Button from '../components/Button';
+import React, {useEffect, useState} from 'react';
+import {Text} from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackProps} from '../App';
 import Layout from '../Layout';
@@ -8,22 +7,23 @@ import Layout from '../Layout';
 type WaitingScreenProps = NativeStackScreenProps<StackProps, 'WaitingScreen'>;
 
 const WaitingScreen = ({navigation, route}: WaitingScreenProps) => {
-  const {user, setUser} = route.params;
+  const {user, setUser, socket} = route.params;
+
+  const [isFinished, setIsFinished] = useState(false);
+
+  useEffect(() => {
+    socket.on('quiz_finished', () => {
+      setIsFinished(true);
+    });
+  }, []);
+
   return (
     <Layout
       navigation={navigation}
       user={user}
       setUser={setUser}
       title={'Добро пожаловать!'}>
-      <Button
-        title={'Создать'}
-        // @ts-ignore
-        onPress={() => navigation.navigate('SelectQuizScreen')}
-      />
-      <Button
-        title={'Подключиться к опросу'}
-        onPress={() => Alert.alert('Подключаемся к опросу')}
-      />
+      <Text>Ожидание</Text>
     </Layout>
   );
 };

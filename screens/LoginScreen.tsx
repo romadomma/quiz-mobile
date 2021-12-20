@@ -3,7 +3,7 @@ import Button from '../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackProps} from '../App';
 import Layout from '../Layout';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {useForm} from 'react-hook-form';
 import FormInput from '../components/FormInput';
 import {useMutation} from 'react-query';

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {AxiosError} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const apiClient = axios.create({
@@ -23,5 +23,15 @@ apiClient.interceptors.request.use(async config => {
     },
   };
 });
+
+apiClient.interceptors.response.use(
+  response => response,
+  async (error: AxiosError) => {
+    if (error.code === '401') {
+      await AsyncStorage.removeItem('@user');
+    }
+    return error;
+  },
+);
 
 export default apiClient;
