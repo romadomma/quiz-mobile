@@ -34,9 +34,6 @@ const ShareScreen = ({navigation, route}: ShareScreenProps) => {
     ws.on('client_connected', amount => {
       setConnectionsAmount(amount);
     });
-    ws.on('client_connected', amount => {
-      setConnectionsAmount(amount);
-    });
     ws.on('quiz_started', () => {
       navigation.navigate('WaitingScreen', {setUser, user, socket: ws});
     });

@@ -1,11 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Platform, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 import Button from '../components/Button';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackProps} from '../App';
 import Layout from '../Layout';
-import Input from '../components/Input';
-import {createSocket} from '../socket';
 import FormInput from '../components/FormInput';
 import {useForm} from 'react-hook-form';
 
@@ -17,28 +15,6 @@ const ConnectScreen = ({navigation, route}: ConnectScreenProps) => {
   const {user, setUser} = route.params;
   const [connectionCode, setConnectionCode] = useState('');
   const {control, handleSubmit} = useForm();
-  useEffect(() => {
-    const ws = createSocket(user);
-    ws.on('connect', () => {
-      setSocket(ws);
-      ws.emit('room_create', {
-        adminId: user.id,
-        quizId: quiz.id,
-      });
-    });
-    ws.on('room_created', code => {
-      setRoomCode(code);
-    });
-    ws.on('client_connected', amount => {
-      setConnectionsAmount(amount);
-    });
-    ws.on('client_connected', amount => {
-      setConnectionsAmount(amount);
-    });
-    ws.on('quiz_started', () => {
-      navigation.navigate('WaitingScreen', {setUser, user, socket: ws});
-    });
-  }, []);
 
   return (
     <Layout
@@ -64,10 +40,7 @@ const ConnectScreen = ({navigation, route}: ConnectScreenProps) => {
         <Button
           title={'Подключиться к опросу'}
           onPress={handleSubmit<{code: string}>(({code}) => {
-            const ws = createSocket(user);
-            ws.emit('client_connect', {userId: user.id});
-            // ws.on()
-            navigation.navigate('QuizScreen', {user, setUser, socket: ws});
+            navigation.navigate('WaitingScreen', {user, setUser, code});
           })}
           pressableStyle={styles.connectButton}
         />

@@ -13,3 +13,14 @@ export type Quiz = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type Answer = {
+  id: number;
+  text: string;
+};
+
+export type Question = {
+  text: string;
+  answers: Answer[];
+  number: number;
+};

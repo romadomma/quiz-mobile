@@ -39,11 +39,13 @@ export type StackProps = {
   QuizScreen: {
     setUser: (user?: User) => Promise<void> | void;
     user: User;
+    roundTime: number;
+    socket: Socket;
   };
   WaitingScreen: {
     setUser: (user?: User) => Promise<void> | void;
     user: User;
-    socket: Socket;
+    code: string;
   };
 };
 const Stack = createNativeStackNavigator<StackProps>();

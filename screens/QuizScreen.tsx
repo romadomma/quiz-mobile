@@ -1,47 +1,74 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {StackProps} from '../App';
 import Layout from '../Layout';
 import {View, Text, StyleSheet} from 'react-native';
 import Button from '../components/Button';
+import {Question} from '../types';
+import Loader from '../components/Loader';
+import {Bar} from 'react-native-progress';
 
 type StartScreenProps = NativeStackScreenProps<StackProps, 'QuizScreen'>;
 
 const QuizScreen = ({navigation, route}: StartScreenProps) => {
-  const {user, setUser} = route.params;
+  const {user, setUser, roundTime, socket: ws} = route.params;
+  const [question, setQuestion] = useState<Question | undefined>(undefined);
+  const [progress, setProgress] = useState(0);
+  const [progressTimer, setProgressTimer] = useState<number | undefined>(
+    undefined,
+  );
+
+  useEffect(() => {
+    ws.on('next_round', (newQuestion?: Question) => {
+      if (question) {
+        setQuestion(newQuestion);
+        setProgress(0);
+        if (progressTimer) {
+          clearTimeout(progressTimer);
+        }
+        setProgressTimer(
+          // @ts-ignore
+          setInterval(() => {
+            setProgress(progress + 1 / (roundTime * 2));
+          }, 500),
+        );
+      } else {
+        ws.close();
+        navigation.navigate('StartScreen', {user, setUser});
+      }
+    });
+  }, []);
+
+  const content = question ? (
+    <View style={styles.root}>
+      {/*вопрос*/}
+      <View style={styles.question}>
+        <Text style={styles.questionText}>{question.text}</Text>
+      </View>
+      {/*время*/}
+      <Bar progress={progress} />
+      {/*ответы*/}
+      <View style={styles.answers}>
+        {question.answers.map(answer => (
+          <Button
+            key={answer.id}
+            pressableStyle={styles.answer}
+            textStyle={styles.answerText}
+            title={answer.text}
+            onPress={() => {
+              ws.emit('answer_sent', {userId: user.id, answerId: answer.id});
+            }}
+          />
+        ))}
+      </View>
+    </View>
+  ) : (
+    <Loader />
+  );
+
   return (
     <Layout navigation={navigation} user={user} setUser={setUser}>
-      <View style={styles.root}>
-        {/*вопрос*/}
-        <View style={styles.question}>
-          <Text style={styles.questionText}>Вопрос хороший</Text>
-        </View>
-        {/*время*/}
-        <View style={styles.timeLine} />
-        {/*ответы*/}
-        <View style={styles.answers}>
-          <Button
-            pressableStyle={styles.answer}
-            textStyle={styles.answerText}
-            title="Ответ 1"
-          />
-          <Button
-            pressableStyle={styles.answer}
-            textStyle={styles.answerText}
-            title="Ответ 2"
-          />
-          <Button
-            pressableStyle={styles.answer}
-            textStyle={styles.answerText}
-            title="Ответ 3"
-          />
-          <Button
-            pressableStyle={styles.answer}
-            textStyle={styles.answerText}
-            title="Ответ 4"
-          />
-        </View>
-      </View>
+      {content}
     </Layout>
   );
 };
