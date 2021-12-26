@@ -20,6 +20,7 @@ export type Answer = {
 };
 
 export type Question = {
+  id: number;
   text: string;
   answers: Answer[];
   number: number;

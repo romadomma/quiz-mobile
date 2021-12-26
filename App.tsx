@@ -13,6 +13,7 @@ import {QueryClient, QueryClientProvider} from 'react-query';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from './components/Loader';
 import {Socket} from 'socket.io-client';
+import AdminWaitingScreen from './screens/AdminWaitingScreen';
 
 export type StackProps = {
   LoginScreen: {
@@ -46,6 +47,11 @@ export type StackProps = {
     setUser: (user?: User) => Promise<void> | void;
     user: User;
     code: string;
+  };
+  AdminWaitingScreen: {
+    setUser: (user?: User) => Promise<void> | void;
+    user: User;
+    socket: Socket;
   };
 };
 const Stack = createNativeStackNavigator<StackProps>();
@@ -125,6 +131,13 @@ const App = () => {
             component={WaitingScreen}
             options={{
               title: 'Ожидание других участников',
+            }}
+          />
+          <Stack.Screen
+            name="AdminWaitingScreen"
+            component={AdminWaitingScreen}
+            options={{
+              title: 'Ожидание окончания опроса',
             }}
           />
           <Stack.Screen

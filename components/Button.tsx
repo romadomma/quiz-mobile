@@ -22,12 +22,12 @@ const Button = ({title, icon, ...args}: ButtonProps) => (
       return {
         ...styles.button,
         ...args.pressableStyle,
-        ...(pressed
-          ? {backgroundColor: 'lightgray'}
-          : {backgroundColor: 'white'}),
+        ...(pressed && {backgroundColor: 'lightgray'}),
+        ...(args.disabled && {backgroundColor: 'lightgray', opacity: 0.5}),
       };
     }}
-    onPress={args.onPress}>
+    onPress={args.onPress}
+    disabled={args.disabled}>
     <Text
       style={{
         ...styles.buttonText,
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     marginVertical: 16,
   },
   buttonText: {
+    textAlign: 'center',
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',

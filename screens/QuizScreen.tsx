@@ -14,28 +14,36 @@ const QuizScreen = ({navigation, route}: StartScreenProps) => {
   const {user, setUser, roundTime, socket: ws} = route.params;
   const [question, setQuestion] = useState<Question | undefined>(undefined);
   const [progress, setProgress] = useState(0);
+  const [answerSent, setAnswerSent] = useState(false);
   const [progressTimer, setProgressTimer] = useState<number | undefined>(
     undefined,
   );
 
   useEffect(() => {
-    ws.on('next_round', (newQuestion?: Question) => {
-      if (question) {
-        setQuestion(newQuestion);
-        setProgress(0);
-        if (progressTimer) {
-          clearTimeout(progressTimer);
+    ws.on('next_question', (newQuestion: Question) => {
+      setQuestion(newQuestion);
+      setProgress(0);
+      setAnswerSent(false);
+      // @ts-ignore
+      setProgressTimer(prevTimer => {
+        if (prevTimer) {
+          clearInterval(prevTimer);
         }
-        setProgressTimer(
-          // @ts-ignore
-          setInterval(() => {
-            setProgress(progress + 1 / (roundTime * 2));
-          }, 500),
-        );
-      } else {
-        ws.close();
-        navigation.navigate('StartScreen', {user, setUser});
+        // @ts-ignore
+        return setInterval(() => {
+          setProgress(prevProgress => {
+            console.log(prevProgress);
+            return prevProgress + 1 / (roundTime * 8);
+          });
+        }, 125);
+      });
+    });
+    ws.on('quiz_finished', () => {
+      if (progressTimer) {
+        clearInterval(progressTimer);
       }
+      ws.close();
+      navigation.navigate('StartScreen', {user, setUser});
     });
   }, []);
 
@@ -46,7 +54,12 @@ const QuizScreen = ({navigation, route}: StartScreenProps) => {
         <Text style={styles.questionText}>{question.text}</Text>
       </View>
       {/*время*/}
-      <Bar progress={progress} />
+      <Bar
+        progress={progress}
+        style={styles.progressBar}
+        width={250}
+        height={8}
+      />
       {/*ответы*/}
       <View style={styles.answers}>
         {question.answers.map(answer => (
@@ -55,8 +68,13 @@ const QuizScreen = ({navigation, route}: StartScreenProps) => {
             pressableStyle={styles.answer}
             textStyle={styles.answerText}
             title={answer.text}
+            disabled={answerSent}
             onPress={() => {
-              ws.emit('answer_sent', {userId: user.id, answerId: answer.id});
+              setAnswerSent(true);
+              ws.emit('answer_sent', {
+                userId: user.id,
+                answerId: answer.id,
+              });
             }}
           />
         ))}
@@ -83,6 +101,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   question: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 16,
@@ -93,12 +114,10 @@ const styles = StyleSheet.create({
   },
   questionText: {
     fontSize: 16,
+    textAlign: 'center',
   },
-  timeLine: {
-    width: '100%',
-    height: 16,
-    backgroundColor: '#f3a832',
-    borderRadius: 6,
+  progressBar: {
+    marginVertical: 16,
   },
   answers: {
     display: 'flex',

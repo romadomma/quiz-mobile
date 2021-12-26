@@ -31,6 +31,7 @@ type LayoutProps = {
     | 'ConnectScreen'
     | 'LoginScreen'
     | 'WaitingScreen'
+    | 'AdminWaitingScreen'
   >;
 };
 

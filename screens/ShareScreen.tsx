@@ -35,7 +35,7 @@ const ShareScreen = ({navigation, route}: ShareScreenProps) => {
       setConnectionsAmount(amount);
     });
     ws.on('quiz_started', () => {
-      navigation.navigate('WaitingScreen', {setUser, user, socket: ws});
+      navigation.navigate('AdminWaitingScreen', {setUser, user, socket: ws});
     });
   }, []);
   return (
